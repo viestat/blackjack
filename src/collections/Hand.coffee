@@ -2,21 +2,14 @@ class window.Hand extends Backbone.Collection
   model: Card
 
   initialize: (array, @deck, @isDealer) ->
-    #console.log array
-    #console.log @deck
-    #console.log @isDealer
 
   hit: ->
-    console.log 'hit'
     card = @deck.pop()
     @add( card )
     card
 
   stand: ->
-    console.log 'stand'
-    #@trigger 'stand', @
-    debugger
-    # trigger event to another function which will check scores and determine winner
+    @trigger 'stand', @
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1

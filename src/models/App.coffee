@@ -5,8 +5,62 @@ class window.App extends Backbone.Model
     @set 'deck', deck = new Deck()
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
-    @set 'playerScore', @get('playerHand').scores()
-    @set 'dealerScore', @get('dealerHand').scores()
+    @get 'playerHand'
+      .on 'add', @checkForBust, @
+    @get 'playerHand'
+      .on 'stand', @checkScores, @
+
+  checkForBust: =>
+    console.log ' check for bust'
+    playerScores = @get('playerHand').scores()
+    playerScore = Math.min.apply(null, playerScores)
+
+    if playerScore > 21
+      setTimeout =>
+          alert 'you lose!'
+          @restart()
+      , 50
+      # Restart game 
+      
+
 
   checkScores: ->
-    console.log 'check scores'
+    # Flip dealer's first card
+    @get 'dealerHand'
+      .models[0].flip()
+
+    # Get player and dealer scores
+    playerScores = @get('playerHand').scores()
+    dealerScores = @get('dealerHand').scores()
+
+    # Find minimum of both possible scores
+    playerScore = Math.min.apply(null, playerScores)
+    dealerScore = Math.min.apply(null, dealerScores)
+    
+    # Standard rule: if dealer's score is less than 17, dealer must hit
+    while dealerScore < 17
+      @get('dealerHand').hit()
+      # Recalculate dealer score
+      dealerScores = @get('dealerHand').scores()
+      dealerScore = Math.min.apply(null, dealerScores)
+    
+    # Set delay so that you can see your score before you lose
+
+    # After dealer hits, if dealer has higher score, dealer wins
+    if dealerScore > playerScore and dealerScore <= 21
+      setTimeout =>
+        alert 'dealer wins!'
+        @restart()
+      , 100
+    else
+      setTimeout =>
+        alert 'player wins!'
+        @restart()
+      , 100
+    
+
+  restart: ->
+    # Make new deck and deal new hands
+    @initialize()
+    # Trigger AppView to re-render everything
+    @trigger 'restart', @

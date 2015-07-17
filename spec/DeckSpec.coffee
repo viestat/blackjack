@@ -8,6 +8,7 @@ describe 'deck', ->
     deck = new Deck()
     hand = deck.dealPlayer()
 
+
   describe 'hit', ->
     it 'should give the last card from the deck', ->
       assert.strictEqual deck.length, 50
