@@ -2,6 +2,7 @@ class window.Card extends Backbone.Model
   initialize: (params) ->
     @set
       revealed: true
+      dealt: false
       value: if !params.rank or 10 < params.rank then 10 else params.rank
       suitName: ['spades', 'diamonds', 'clubs', 'hearts'][params.suit]
       rankName: switch params.rank
@@ -14,4 +15,8 @@ class window.Card extends Backbone.Model
   flip: ->
     @set 'revealed', !@get 'revealed'
     @
+
+  wasDealt: -> 
+    @set 'dealt', true
+    @    
 

@@ -4,12 +4,12 @@ class window.AppView extends Backbone.View
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
   '
-  templateWin: _.template '<div class="newGameWin"> 
+  templateWin: _.template '<div class="newGameWin zoomIn animated"> 
                           <div class="gameMessage winMessage">
                           </div>
                           <button class="retry-button">Play Again?</button>
                         </div>'
-  templateLose: _.template '<div class="newGameLose"> 
+  templateLose: _.template '<div class="newGameLose zoomIn animated"> 
                           <div class="gameMessage loseMessage">
                           </div>
                           <button class="retry-button">Play Again?</button>
@@ -35,7 +35,11 @@ class window.AppView extends Backbone.View
     @$el.addClass 'gameArea'
 
   renderWin: ->
-    @$el.prepend @templateWin()
+    $('.hit-button').prop('disabled', true)
+    $('.stand-button').prop('disabled', true)
+    @$el.prepend(@templateWin)
 
-  renderLose: ->
+  renderLose: =>
+    $('.hit-button').prop('disabled', true)
+    $('.stand-button').prop('disabled', true)
     @$el.prepend @templateLose()

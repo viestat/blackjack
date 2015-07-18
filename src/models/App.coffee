@@ -11,9 +11,9 @@ class window.App extends Backbone.Model
       .on 'stand', @checkScores, @
 
   checkForBust: =>
-    console.log ' check for bust'
     playerScores = @get('playerHand').scores()
     playerScore = Math.min.apply(null, playerScores)
+    @dealCards()
 
     if playerScore > 21
       @initialize()
@@ -28,12 +28,16 @@ class window.App extends Backbone.Model
     playerScores = @get('playerHand').scores()
     dealerScores = @get('dealerHand').scores()
 
+    #
+    @dealCards()
+
     # Find minimum of both possible scores
     playerScore = Math.min.apply(null, playerScores)
     dealerScore = Math.min.apply(null, dealerScores)
     
     # Standard rule: if dealer's score is less than 17, dealer must hit
     while dealerScore < 17
+      @dealCards()
       @get('dealerHand').hit()
       # Recalculate dealer score
       dealerScores = @get('dealerHand').scores()
@@ -46,4 +50,16 @@ class window.App extends Backbone.Model
     else
       @initialize()
       @trigger 'win', @
+
+  dealCards: =>
+    @get 'playerHand'
+      .each (val, index, array) ->
+        if index < array.length - 1
+          val
+           .wasDealt() 
+        
+    @get 'dealerHand' 
+      .each (val)->
+         val
+           .wasDealt()
 
