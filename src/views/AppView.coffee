@@ -4,6 +4,7 @@ class window.AppView extends Backbone.View
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
   '
+  #<div class="newGame" style="vi"></div>
 
   events:
     'click .hit-button': -> @model.get('playerHand').hit()
@@ -18,4 +19,5 @@ class window.AppView extends Backbone.View
     @$el.html @template()
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
+    @$el.addClass 'gameArea'
 
