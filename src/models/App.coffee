@@ -27,8 +27,6 @@ class window.App extends Backbone.Model
     # Get player and dealer scores
     playerScores = @get('playerHand').scores()
     dealerScores = @get('dealerHand').scores()
-
-    #
     @dealCards()
 
     # Find minimum of both possible scores
